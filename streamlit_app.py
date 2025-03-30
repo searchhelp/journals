@@ -48,7 +48,7 @@ with st.expander("Journal ratings from five major sources", expanded=True):
     st.markdown("""
     For each origin, the ratings are shown in descending order (best to worst):
 
-    - **AJG**: 4, 3, 2, 1  
+    - **AJG**: 4*, 4, 3, 2, 1  
     - **CNRS**: 1*, 1, 2, 3, 4  
     - **CNU**: A, B, C  
     - **VHB**: A+, A, B, C, D  
