@@ -35,7 +35,7 @@ st.markdown(custom_css, unsafe_allow_html=True)
 # Load data
 @st.cache_data
 def load_data():
-    df = pd.read_excel("REVISTAS_LISTADO_DEPURADO_ORDENADO_LIMPIO.xlsx")
+    df = pd.read_excel("Journals.xlsx")
     df["Normalized_Title"] = df["Revista"].str.lower().str.strip()
     return df
 
