@@ -111,7 +111,7 @@ st.markdown(custom_css, unsafe_allow_html=True)
 def load_data():
     #df = pd.read_excel("Journals.xlsx")
     path = "Journals.xlsx"
-    st.write(f"Intentando abrir: {path}") 
+    #st.write(f"Intentando abrir: {path}") 
     df = pd.read_excel(path)
     df["Normalized_Title"] = df["Revista"].str.lower().str.strip()
     return df
