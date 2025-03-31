@@ -1,13 +1,87 @@
+import streamlit as st
+import pandas as pd
+import os
+
+#st.set_page_config(page_title='Journal Ratings', page_icon='📚', layout='wide')
+st.set_page_config("Journal Ratings Finder",
+    "favicon.ico")
+
+# Cargar usuarios autorizados desde Secrets
+AUTHORIZED_USERS = [
+    os.getenv("USER1"),
+    os.getenv("USER2"),
+    os.getenv("USER3"),
+    os.getenv("USER4"),
+    os.getenv("USER5"),
+    os.getenv("USER6"),
+    os.getenv("USER7"),
+    os.getenv("USER8"),
+    os.getenv("USER9"),
+    os.getenv("USER10"),
+    os.getenv("USER11"),
+    os.getenv("USER12"),
+    os.getenv("USER13"),
+    os.getenv("USER14"),
+    os.getenv("USER15"),
+    os.getenv("USER16"),
+    os.getenv("USER17"),
+    os.getenv("USER18"),
+    os.getenv("USER19"),
+    os.getenv("USER20"),
+    os.getenv("USER21"),
+]
+AUTHORIZED_USERS = [u for u in AUTHORIZED_USERS if u]
+
+# Inicializar el estado de sesión
+if 'authenticated' not in st.session_state:
+    st.session_state['authenticated'] = False
+
+# --- LOGIN UI ---
+if not st.session_state['authenticated']:
+    st.markdown(
+        """
+        <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    st.title("🔐 Login Required")
+    with st.form("login_form"):
+        email = st.text_input("Email")
+        #password = st.text_input("Password", type="password", key="user_password", autocomplete="current-password") # Added autocomplete
+        password = st.text_input("Password", type="password", autocomplete="current-password")
+        #login_button = st.button("Login")
+        submit = st.form_submit_button("Login")
+
+    if submit: #login_button:
+        #credential = f"{email}:{password}"
+        credential = f"{email.lower()}:{password}"
+        if credential in AUTHORIZED_USERS:
+            st.session_state['authenticated'] = True
+            st.rerun()
+        else:
+            st.error("Invalid email or password")
+    st.stop()
+
+# --- LOGOUT BUTTON ---
+with st.sidebar:
+    if st.button("Logout"):
+        st.session_state['authenticated'] = False
+        st.rerun()
+
+# --- APP CONTENT STARTS HERE ---
 
 import streamlit as st
 import pandas as pd
 
 # Page config with favicon
-st.set_page_config(
-    page_title="Journal Ratings Finder",
-    page_icon="favicon.ico"
-)
-
+#    page_title="Journal Ratings Finder",
+#    page_icon="favicon.ico"
+#)
+ 
 # Custom CSS for layout and mobile optimizations
 custom_css = """
     <style>
