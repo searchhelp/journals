@@ -155,12 +155,57 @@ if selected_journals:
         pivot = pivot[full_columns]
 
         # Add scrollable container
-        st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
-        st.dataframe(pivot, use_container_width=True, hide_index=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+        #st.markdown('<div class="scroll-container">', unsafe_allow_html=True)
+        #st.dataframe(pivot, use_container_width=True, hide_index=True)
+        #st.markdown('</div>', unsafe_allow_html=True)
 
-        # Download
+        # Renombrar la columna 'Revista' a 'Journal'
+        pivot = pivot.rename(columns={"Revista": "Journal"})
+
+        def render_html_table(df):
+            header = (
+                "<thead><tr>"
+                "<th>Journal</th>"
+                "<th>AJG<br><span style='font-size: 0.75em;'>4*, 4, 3, 2, 1</span></th>"
+                "<th>CNRS<br><span style='font-size: 0.75em;'>1*, 1, 2, 3, 4</span></th>"
+                "<th>CNU<br><span style='font-size: 0.75em;'>A, B, C</span></th>"
+                "<th>VHB<br><span style='font-size: 0.75em;'>A+, A, B, C, D</span></th>"
+                "<th>ABDC<br><span style='font-size: 0.75em;'>A*, A, B, C</span></th>"
+                "</tr></thead>"
+            )
+
+            body_rows = []
+            for _, row in df.iterrows():
+                body_rows.append(
+                    f"<tr>"
+                    f"<td>{row['Journal']}</td>"
+                    f"<td>{row['AJG']}</td>"
+                    f"<td>{row['CNRS']}</td>"
+                    f"<td>{row['CNU']}</td>"
+                    f"<td>{row['VHB']}</td>"
+                    f"<td>{row['ABDC']}</td>"
+                    f"</tr>"
+                )
+            body = "<tbody>" + "".join(body_rows) + "</tbody>"
+
+            table_html = (
+                "<table style='width: 100%; border-collapse: collapse; text-align: center;' border='1'>"
+                f"{header}{body}"
+                "</table>"
+            )
+
+            return table_html
+
+        # ✅ Esta es la única línea que debe generar salida
+        pivot = pivot.fillna("")
+        st.markdown(render_html_table(pivot), unsafe_allow_html=True)
+
+
+        # Descarga como CSV (igual que antes)
         csv = pivot.to_csv(index=False).encode('utf-8')
         st.download_button("Download results as CSV", csv, "journal_ratings_results.csv", "text/csv")
+
+
+  
     else:
         st.warning("No matches found.")
